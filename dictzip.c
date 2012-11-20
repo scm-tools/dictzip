@@ -20,9 +20,19 @@
 
 #include "dictzip.h"
 #include "data.h"
+#include "getopt_long.h"
 
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <string.h>
+
+#ifdef _WIN32
+#define snprintf _snprintf
+#endif
+
+#ifdef _WIN32
+#define __func__ __FUNCTION__
+#endif
 
 static void xfwrite(
    const void *ptr, size_t size, size_t nmemb,
@@ -324,6 +334,10 @@ int dict_data_zip( const char *inFilename, const char *outFilename,
 
    return 0;
 }
+
+#ifndef DICT_VERSION
+#define DICT_VERSION "1.2.1"
+#endif
 
 static const char *id_string (void)
 {

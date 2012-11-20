@@ -37,6 +37,8 @@ Cambridge, MA 02139, USA.  */
 
 #include <stdlib.h>
 
+#if !HAVE_GETOPT_LONG
+
 int
 getopt_long (argc, argv, options, long_options, opt_index)
      int argc;
@@ -64,4 +66,4 @@ getopt_long_only (argc, argv, options, long_options, opt_index)
   return _getopt_internal (argc, argv, options, long_options, opt_index, 1);
 }
 */
-
+#endif

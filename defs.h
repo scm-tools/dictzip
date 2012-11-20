@@ -20,11 +20,7 @@
 #ifndef _DEFS_H_
 #define _DEFS_H_
 
-#include "dictP.h"
-#include "dictdplugin.h"
-
 #include <zlib.h>
-#include <maa.h>
 
 				/* Configurable things */
 
@@ -151,23 +147,6 @@ typedef struct dictData {
    dictCache     cache[DICT_CACHE_SIZE];
 } dictData;
 
-typedef struct dictPlugin {
-   void *      data;
-
-#ifdef USE_PLUGIN
-   lt_dlhandle handle;
-
-   dictdb_open_type   dictdb_open;
-   dictdb_set_type    dictdb_set;
-   dictdb_search_type dictdb_search;
-   dictdb_free_type   dictdb_free;
-   dictdb_error_type  dictdb_error;
-   dictdb_close_type  dictdb_close;
-
-   char dictdb_free_called; /* 1 after dictdb_free call */
-#endif
-} dictPlugin;
-
 typedef struct dictIndex {
    int           fd;		 /* file descriptor */
    const char    *start;	 /* start of mmap'd area */
@@ -184,96 +163,5 @@ typedef struct dictIndex {
    const int     *isspacealnum;
 } dictIndex;
 
-typedef struct dictDatabase {
-   const char *databaseName;
-   const char *databaseShort;
-   const char *databaseInfo;
-   const char *dataFilename;
-   const char *indexFilename;
-   const char *indexsuffixFilename;
-   const char *indexwordFilename;
-   const char *filter;
-   const char *prefilter;
-   const char *postfilter;
-   lst_List   acl;
-   int        available;	/* if user has authenticated for database */
-
-   dictData   *data;
-   dictIndex  *index;
-   dictIndex  *index_suffix;
-   dictIndex  *index_word;
-
-   int        *strategy_disabled; /* disable_strategy keyword*/
-
-   lst_List   *virtual_db_list;
-
-   char *alphabet;
-
-   int invisible;    /* non-zero for invisible databases */
-
-   int exit_db;      /* non-zero for dictionary_exit entry */
-   int virtual_db;   /* non-zero for virtual databases */
-   int plugin_db;    /* non-zero for plugin entry */
-   int normal_db;    /* non-zero for normal database */
-   int mime_db;      /* non-zero for MIME database */
-
-   int default_strategy;    /* default search strategy for `.' */
-
-   const char *mime_header; /* MIME header for OPTION MIME command */
-
-   /* database_virtual members */
-   const char *database_list;  /* comma-separated list of database names */
-
-   /* database_plugin members */
-   const char *pluginFilename;
-   const char *plugin_data;    /* data for initializing plugin */
-   dictPlugin *plugin;
-
-   /* database_mime members */
-   const char *mime_mimeDbname;
-   const char *mime_nomimeDbname;
-
-   struct dictDatabase *mime_mimeDB;
-   struct dictDatabase *mime_nomimeDB;
-} dictDatabase;
-
-#define DICT_DENY     0
-#define DICT_ALLOW    1
-#define DICT_AUTHONLY 2
-#define DICT_USER     3
-#define DICT_GROUP    4		/* Not implemented */
-#define DICT_MATCH    5         /* For IP matching routines */
-#define DICT_NOMATCH  6         /* For IP matching routines */
-
-typedef struct dictAccess {
-   int        type;		/* deny, allow, accessonly, user, group */
-   const char *spec;
-} dictAccess;
-
-typedef struct dictConfig {
-   lst_List      acl;		/* type dictAccess */
-   lst_List      dbl;		/* type dictDatabase */
-   hsh_HashTable usl;		/* username/shared-secret list */
-} dictConfig;
-
-typedef struct dictWord {
-   const dictDatabase  *database;
-   const dictDatabase  *database_visible;
-
-   char    *word;
-
-   unsigned long start;
-   unsigned long end;
-
-/* Used by plugins */
-   const char    *def;
-   int            def_size;
-} dictWord;
-
-typedef struct dictToken {
-   const char   *string;
-   int          integer;
-   src_Type     src;
-} dictToken;
 
 #endif /* _DEFS_H_ */

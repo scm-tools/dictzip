@@ -22,9 +22,9 @@
 #ifndef _DICTZIP_H_
 #define _DICTZIP_H_
 
-#include "maa.h"
+#include <stddef.h>
+#include <stdio.h>
 #include "zlib.h"
-#include "dictd.h"
 
 				/* End of configurable things */
 

@@ -20,8 +20,8 @@
 #ifndef _DATA_H_
 #define _DATA_H_
 
-#include "dictP.h"
 #include "defs.h"
+#include <stdio.h>
 
 /* initialize .data file */
 extern dictData *dict_data_open (
@@ -34,10 +34,6 @@ extern void     dict_data_print_header( FILE *str, dictData *data );
 extern int      dict_data_zip(
    const char *inFilename, const char *outFilename,
    const char *preFilter, const char *postFilter );
-
-extern char *dict_data_obtain (
-   const dictDatabase *db,
-   const dictWord *dw);
 
 extern char *dict_data_read_ (
    dictData *data,

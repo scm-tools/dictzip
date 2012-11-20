@@ -345,37 +345,6 @@ void dict_data_close( dictData *header )
    xfree( header );
 }
 
-char *dict_data_obtain (const dictDatabase *db, const dictWord *dw)
-{
-   char *word_copy;
-   int len;
-
-   if (!dw || !db)
-      return NULL;
-
-   if (dw -> def){
-      if (-1 == dw -> def_size){
-	 len = strlen (dw -> def);
-      }else{
-	 len = dw -> def_size;
-      }
-
-      word_copy = xmalloc (2 + len);
-      memcpy (word_copy, dw -> def, len);
-      word_copy [len + 0] = '\n';
-      word_copy [len + 1] = 0;
-
-      return word_copy;
-   }else{
-      assert (db);
-      assert (db -> data);
-
-      return dict_data_read_ (
-	 db -> data, dw -> start, dw -> end,
-	 db->prefilter, db->postfilter);
-   }
-}
-
 char *dict_data_read_ (
    dictData *h, unsigned long start, unsigned long size,
    const char *preFilter, const char *postFilter )
