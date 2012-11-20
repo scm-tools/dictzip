@@ -20,7 +20,7 @@ if test -z "$DICTL_CHARSET"; then
 fi
 
 internal_iconv (){
-    iconv -c -f $1 -t $2//TRANSLIT
+    iconv -c -f $1 -t $2
 }
 
 internal_recode (){
@@ -28,21 +28,7 @@ internal_recode (){
 }
 
 internal_konwert (){
- 	sedexpr='
- 		/(CP)?(437|8(5[0257]|6[0-69]|74))/	{ s//cp\2/; q }
- 		/8859_([1-9])/				{ s//iso\1/; q }
- 		/ANSI_X3.4(-19(68|86))?/		{ s//ascii/; q }
- 		/(US-)?ASCII/				{ s//ascii/; q }
- 		/(CP|WINDOWS-)(125[0-8])/		{ s//cp\1/; q }
- 		/ISO([-_]?8859-|8859)([1-9]|1[01345])/	{ s//iso\2/; q }
- 		/KOI8-?R/				{ s//koi8r/; q }
- 		/KOI8-?U/				{ s//koi8u/; q }
- 		/UTF-?8/				{ s//utf8/; q }
- 		/VISCII/				{ s//viscii/; q }
- 		/.*/					{ s///; q }'
- 	from=`echo "$1" | tr a-z A-Z | sed -r -e "$sedexpr"`
- 	to=`echo "$2" | tr a-z A-Z | sed -r -e "$sedexpr"`
- 	konwert "$from-$to"
+    konwert $1-$2
 }
 
 # for backward compatibility
@@ -73,11 +59,17 @@ echo apple |
 
 #####################################
 
+shquote (){
+    __cmd=`printf '%s\n' "$1" | sed "s|'|'\\\\\''|g"`
+    printf "%s\n" "'$__cmd'"
+}
+
 cmd='dict'
 while test $# -ne 0; do
-    cmd="$cmd '$1'"
+    cmd="$cmd "`shquote "$1"`
     shift
 done
-cmd=$(echo $cmd | charset2charset $DICTL_CHARSET $DICTL_SERVER_CHARSET)
 
-eval $cmd -P - | charset2charset $DICTL_SERVER_CHARSET $DICTL_CHARSET
+cmd=$(printf '%s\n' "$cmd" | charset2charset $DICTL_CHARSET $DICTL_SERVER_CHARSET)
+
+eval "$cmd" | charset2charset $DICTL_SERVER_CHARSET $DICTL_CHARSET

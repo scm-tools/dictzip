@@ -41,7 +41,7 @@ that conforms to the DICT protocol.  It also creates an index file named
 By default, the index is sorted according to the
 C locale, and only alphanumeric characters and spaces are used in
 sorting, however this may be changed with the
-\-\-locale and \-\-allchars
+--locale and --allchars
 options.  (
 .IR basename  " is commonly chosen to correspond to the basename of"
 .I FILE
@@ -66,11 +66,11 @@ these options must be given.
 
 .B dictfmt
 prepends several headers are to the .dict file.  The 00-database-url
-header gives the value of the \-u option as the URL of the site from
+header gives the value of the -u option as the URL of the site from
 which the original database was obtained.  The 00-database-short
-header gives the value of the \-s option as the short name of the
+header gives the value of the -s option as the short name of the
 dictionary.  (This "short name" is the identifying name given by the
-"dict- D" option.)  If the \-u and/or \-s options are omitted, these
+"dict- D" option.)  If the -u and/or -s options are omitted, these
 values will be shown as "unknown", which is undesirable for a publicly
 distributed database.
 
@@ -196,7 +196,7 @@ definition starts on the following line.  The first line beginning
 file, and '%h ' is stripped from in front of the headword.  All
 text before the first headword is included in the headers.
 .B The second line beginning '%h' is taken as the first headword.  
-.br
+..br
 This option was written to format Jay Kominek's elements database.  
 .TP
 .BI \-i \  \-I
@@ -233,14 +233,14 @@ display version information
 .BI \-D 
 output debugging information
 .TP
-.BI \-\-help
+.BI \--help
 display a help message
 .TP
-.BI \-\-locale " locale"
+.BI \--locale " locale"
 Specifies the locale used for sorting.  If no locale is specified, the
-"C" locale is used. For using UTF-8 mode, \-\-utf8 is needed.
+"C" locale is used. For using UTF-8 mode, --utf8 is needed.
 .TP
-.BI \-\-8bit
+.BI \--8bit
 generates database in 8-bit mode, see
 .I \--locale
 option also.
@@ -249,73 +249,73 @@ option also.
 This option is deprecated.
 Use it for creating 8-bit (non-UTF8) dictionaries only.
 In order to create UTF-8 dictionary, use
-.I \-\-utf8
+.I \--utf8
 option instead.
 .RE
 .TP
-.BI \-\-utf8
+.BI \--utf8
 If specified, UTF-8 database is created.
 .TP
-.BI \-\-allchars
+.BI \--allchars
 Specifies that all characters should be used for the search,
 by default only alphabetic, numeric
 characters and spaces are put to .index file and therefore
 are used in search. Creates the special entry 00-database-allchars.
 .TP
-.BI \-\-case\-sensitive
+.BI \--case-sensitive
 makes the search case sensitive.
 Creates the special entry 00-database-case-sensitive.
 .TP
-.BI \-\-headword\-separator " sep"
+.BI \--headword-separator " sep"
 sets the headword separator, which allows several words to have the same
-definition.  For example, if \'\-\-headword\-separator %%%' is given,
+definition.  For example, if \'--headword-separator %%%' is given,
 and the input file contains \'autumn%%%fall', both 'autumn' and 'fall'
 will be indexed as  headwords, with the same definition.
 .TP
-.BI \-\-index\-data\-separator " sep"
+.BI \--index-data-separator " sep"
 sets the index/data separator, which allows to set the first and fourth
 columns of .index file independently. That is
 the first column can be treated as an index column
 (where the MATCH command searches) and the fourth column as a result column
 (where the MATCH gets things to be returned),
-and they (1-st and 4-th columns) are completely independent of each other.
+and they (1-st and 4-th columns) are completely independant of each other.
 The default value for this separator is ASCII symbol " \\034".
 .TP
-.BI \-\-break\-headwords
+.BI \--break-headwords
 multiple headwords will be written on separate lines in the .dict
-file.  For use with '\-\-headword\-separator.
+file.  For use with '--headword-separator.
 .TP
-.BI \-\-index\-keep\-orig
-When \-\-utf\-8 is specified headwords are lowercased and
+.BI \--index-keep-orig
+When \--utf-8 is specified headwords are lowercased and
 non-alphanumeric characters are removed from it
 before saving to .index file
 in order to simplify the search.
-When \-\-index\-keep\-orig option is used
+When \--index-keep-orig option is used
 fourth column is created (if necessary) in .index file,
 and contains an original headword which is returned by MATCH command.
 This option may be useful to prevent converting " AT&T" to " ATT"
 or to keep proper nouns with uppercased first letter.
 .TP
-.BI \-\-without\-headword
+.BI \--without-headword
 headwords will not be included in .dict file
 .TP
-.BI \-\-without\-header
+.BI \--without-header
 header will not be copied to DB info entry
 .TP
-.BI \-\-without\-url
+.BI \--without-url
 URL will not be copied to DB info entry
 .TP
-.BI \-\-without\-time
+.BI \--without-time
 time of creation will not be copied to DB info entry
 .TP
-.BI \-\-without\-ver
+.BI \--without-ver
 By default
 .B dictfmt
-creates a special entry 00\-database\-dictfmt\-X.Y.Z that contains
+creates a special entry 00-database-dictfmt-X.Y.Z that contains
 (in .dict file)
-dictfmt version in format dictfmt\-X.Y.Z. This option suppresses this.
+dictfmt version in format dictfmt-X.Y.Z. This option suppresses this.
 .TP
-.BI \-\-without\-info
+.BI \--without-info
 DB info entry will not be created.
 This may be useful if 00-database-info headword
 is expected from stdin (dictunformat outputs it).
@@ -346,7 +346,7 @@ command to the
 .I dictd
 , definitions found in this database
 are prepended by the specified MIME header. Creates the special entry
-00\-database\-mime\-header.
+00-database-mime-header.
 .SH CREDITS
 .B dictfmt
 was written by Rik Faith (faith@cs.unc.edu) as part of the dict-misc

@@ -24,13 +24,13 @@ dnl             for optimization and stripping.
 dnl     LIBOBJS is an automatically-generated list of extra objects we need
 
 
-define(VERSION, 1.11.2)
+define(VERSION, 1.12.1)
 
 
 AC_PREREQ(2.53)
-AC_REVISION($Revision: 1.138 $)
+AC_REVISION($Revision: 1.144 $)
 
-AC_INIT([dict],[VERSION],["dict-beta@dict.org"])
+AC_INIT([dict],[VERSION],[dict-beta@dict.org])
 
 AC_CONFIG_SRCDIR([dictd.c])
 AC_CONFIG_HEADER(config.h)
@@ -192,7 +192,6 @@ echo Checking for library functions
 
 AC_FUNC_ALLOCA
 AC_FUNC_FORK
-AC_FUNC_MALLOC
 #AC_FUNC_STAT
 AC_FUNC_STRCOLL
 AC_FUNC_STRFTIME
@@ -293,11 +292,13 @@ AC_CONFIG_FILES(dictfmt.1)
 AC_CONFIG_FILES(dictfmt_index2suffix.1)
 AC_CONFIG_FILES(dictfmt_index2word.1)
 AC_CONFIG_FILES(dictl.1)
+AC_CONFIG_FILES(dict_lookup.1)
 AC_CONFIG_FILES(dictunformat.1)
 AC_CONFIG_FILES(dictzip.1)
 AC_CONFIG_FILES(dictd.8)
 
 AC_CONFIG_FILES(test/dictd_test)
+AC_CONFIG_FILES(test/dictzip_test)
 
 AC_OUTPUT
 

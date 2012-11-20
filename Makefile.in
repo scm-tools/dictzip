@@ -58,16 +58,16 @@ CC=		@CC@
 CXX=		@CXX@
 CPP=		@CPP@
 LIBTOOL=        @LIBTOOL@
-INSTALL=	@INSTALL@
-INSTALL_PROGRAM=@INSTALL_PROGRAM@
-INSTALL_SCRIPT= @INSTALL_SCRIPT@
-INSTALL_DATA=	@INSTALL_DATA@
+INSTALL=	@INSTALL@ -c
+INSTALL_PROGRAM=@INSTALL_PROGRAM@ -c
+INSTALL_SCRIPT= @INSTALL_SCRIPT@ -c
+INSTALL_DATA=	@INSTALL_DATA@ -c
 LEX=		@LEX@
 YACC=		@YACC@
 
 LEXLIB= 	@LEXLIB@
 
-CFLAGS= @CPPFLAGS@ @DEFS@ $(filter-out -O%, @CFLAGS@) -DDICT_PLUGIN_PATH=\"$(PLUGIN_DIR)/\" -DDICT_DICTIONARY_PATH=\"$(DICT_DIR)/\" -DDICT_VERSION=\"$(DICT_VERSION)\" -DDICT_CONFIG_PATH=\"$(CONF_DIR)/\" -I. -I$(srcdir)
+CFLAGS= @CPPFLAGS@ @DEFS@ @CFLAGS@ -DDICT_PLUGIN_PATH=\"$(PLUGIN_DIR)/\" -DDICT_DICTIONARY_PATH=\"$(DICT_DIR)/\" -DDICT_VERSION=\"$(DICT_VERSION)\" -DDICT_CONFIG_PATH=\"$(CONF_DIR)/\" -I. -I$(srcdir)
 
 LIBMAA=		@LIBMAA@
 LIBS=		@LIBS@ ${LIBMAA}
@@ -171,7 +171,7 @@ dictzip : data.o $(LIBOBJS)
 dictfmt : str.o $(LIBOBJS)
 
 servscan.c: servscan.l
-	$(LEX) $(LFLAGS) -o$@ $<
+	$(LEX) $(LFLAGS) $< && mv lex.yy.c $@
 
 servscan.o: servscan.c servparse.o servparse.h
 
@@ -202,10 +202,12 @@ clientparse.o: clientparse.c
 install.dict: dict
 	mkdir -p $(DESTDIR)$(bindir) && \
         mkdir -p $(DESTDIR)$(man1_prefix) && \
-	$(LIBTOOL) --mode=install $(INSTALL_PROGRAM) dict$(EXEEXT) $(DESTDIR)$(bindir) && \
-	$(INSTALL_DATA) dict.1 $(DESTDIR)$(man1_prefix)/dict.1 && \
-	$(INSTALL_SCRIPT) dictl $(DESTDIR)$(bindir) && \
-	$(INSTALL_DATA) dictl.1 $(DESTDIR)$(man1_prefix)/dictl.1
+	$(LIBTOOL) --mode=install $(INSTALL_PROGRAM) dict$(EXEEXT) $(DESTDIR)$(bindir)/ && \
+	$(INSTALL_DATA) dict.1 $(DESTDIR)$(man1_prefix)/ && \
+	$(INSTALL_SCRIPT) dictl $(DESTDIR)$(bindir)/ && \
+	$(INSTALL_DATA) dictl.1 $(DESTDIR)$(man1_prefix)/
+	$(INSTALL_SCRIPT) @srcdir@/dict_lookup $(DESTDIR)$(bindir)/ && \
+	$(INSTALL_DATA) dict_lookup.1 $(DESTDIR)$(man1_prefix)/
 
 install.colorit: colorit
 	mkdir -p $(DESTDIR)$(bindir) && \
@@ -374,8 +376,7 @@ clean:
 	-rm -f *.dict *.index
 	-rm -f *.exe *.dll
 	-rm -f test/_* test/testdb.t.txt test/log.txt
-	-rm -f $(patsubst %.in,%,$(wildcard examples/*.in))
-	#-rm -f ChangeLog*
+	-rm -f ChangeLog*
 
 recursive-clean: clean
 	@for subdir in `echo $(subdirs)`; do \
@@ -390,7 +391,8 @@ distclean: recursive-clean
 	done
 	rm -f config.h config.cache config.status stamp-h.in stamp-h
 	rm -f Makefile doc/Makefile dictdplugin-config
-	rm -f colorit dictl dictunformat test/dictd_test
+	rm -f colorit dictl dictunformat
+	rm -f test/dictd_test test/dictzip_test
 	rm -rf autom4te.cache libmaa/autom4te.cache
 	rm -f  dictfmt_index2suffix dictfmt_index2word
 	rm -f *.1 *.8
@@ -409,7 +411,7 @@ deps:
 
 .PHONY: test
 test: $(EXES) $(LIBRARIES)
-	cd test && sh dictd_test
+	cd test && sh dictd_test && sh dictzip_test
 
 # The following is based on the "Automatic Remaking" node in the GNU
 # Autoconf documentation:

@@ -46,7 +46,7 @@ iconv
 omits characters from output that are invalid,
 .br
 .B
-recode \-f
+recode -f
 is used for character set conversions by default.
 If you prefer
 .B iconv,

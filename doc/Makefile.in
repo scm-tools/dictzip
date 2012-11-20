@@ -48,8 +48,7 @@ INSTALL_DATA=	@INSTALL_DATA@
 
 dicf: dicf.txt
 
-all: 
-#all: rfc.txt
+all: rfc.txt
 
 rfc.txt: rfc.ms toc.ms
 	@echo "Building table of contents, pass 1"

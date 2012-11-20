@@ -253,7 +253,7 @@ static int daemon_check_range(const char *spec, const char *ip)
       return DICT_DENY;
    }
    if (!*pt) {
-      log_info( ":E: Malformed range %s, denying access to %s\n", spec, ip);
+      log_info( ":E: Misformed range %s, denying access to %s\n", spec, ip);
       return DICT_DENY;
    }
    
@@ -1339,7 +1339,7 @@ static void daemon_show_server (
 	 max_dbname_len = daemon_get_max_dbname_length ();
 
 	 daemon_printf(
-	    "%-*.*s %10lu %10lu %cB %10lu %cB %10lu %cB\n",
+	    "%-*.*s %10i %10i %cB %10i %cB %10i %cB\n",
 	    max_dbname_len,
 	    max_dbname_len,
 
@@ -1491,7 +1491,7 @@ static void daemon_quit( const char *cmdline, int argc, const char **argv )
 /* The whole sub should be moved here, but I want to keep the diff small. */
 int _handleconn (int error);
 
-int dict_inetd (char ***argv0, int error)
+int dict_inetd (int error)
 {
    if (setjmp(env)) return 0;
 
@@ -1506,8 +1506,7 @@ int dict_inetd (char ***argv0, int error)
    return _handleconn (error);
 }
 
-int dict_daemon( int s, struct sockaddr_in *csin, char ***argv0,
-		 int error )
+int dict_daemon( int s, struct sockaddr_in *csin, int error )
 {
    struct hostent *h;
 	

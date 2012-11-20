@@ -55,7 +55,7 @@ be specified in the configuration file.  If no servers are specified
 in the configuration file or or on the command line, 
 .B dict 
 will fail.  (This is a compile-time option, ./configure
-\-\-enable\-dictorg, which is disabled by default.)  If IP lookup for a
+--enable-dictorg, which is disabled by default.)  If IP lookup for a
 server expands to a list of IP addresses (as dict.org does currently),
 then each IP will be tried in the order listed.
 .TP
@@ -252,7 +252,7 @@ authentication to this particular server.
 .P
 Servers are tried in the order listed until a connection is made.  If none
 of the specified servers are available, and the compile-time option
-(./configure \-\-enable\-dictorg) is enabled, then an attempt will be made to
+(./configure --enable-dictorg) is enabled, then an attempt will be made to
 connect on
 .B localhost
 and on
