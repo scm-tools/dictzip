@@ -1485,6 +1485,10 @@ int main (int argc, char **argv, char **envp)
       { 0,                  0, 0, 0  }
    };
 
+   /* close all file descriptors except for the standard ones */
+   for (i=getdtablesize()-1; i > 2; --i)
+ 	close(i);
+
    set_umask ();
    init (argv[0]);
 

@@ -253,7 +253,7 @@ static int daemon_check_range(const char *spec, const char *ip)
       return DICT_DENY;
    }
    if (!*pt) {
-      log_info( ":E: Misformed range %s, denying access to %s\n", spec, ip);
+      log_info( ":E: Malformed range %s, denying access to %s\n", spec, ip);
       return DICT_DENY;
    }
    

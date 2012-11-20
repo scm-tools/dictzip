@@ -12,18 +12,18 @@ takes a dictionary index file as a parameter and a dictionary database
 file on stdin and outputs a raw database that may be used to create a 
 .B DICT
 database by 
-.B dictfmt -t.
+.B dictfmt \-t.
 This may be useful if it is desired to create a dictionary for a
 locale other than that for which the original was created, or if it is
 desired to correct or supplement a pre-existing dictionary. 
 .SH OPTIONS
 .TP
-.B --help
+.B \-\-help
 displays a usage message and exits.
 .TP
-.BI --headword-separator " sep"
+.BI \-\-headword\-separator " sep"
 sep is the headword separator used when creating the origianl
-dictionary.  (See --headword-separator in
+dictionary.  (See \-\-headword\-separator in
 .BR "dictfmt (1)").
 .TP
 .B index_filename

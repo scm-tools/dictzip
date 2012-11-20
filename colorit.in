@@ -167,6 +167,7 @@ convert_files_to_stdout (){
 
     function process_config (){
 	if (pp == ""){
+	    pipe = "cat < \"" config_file "\""
 	    while (0 < (ret = (pipe | getline))){
 		process_config_line()
 	    }

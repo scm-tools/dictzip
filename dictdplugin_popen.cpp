@@ -43,6 +43,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string>
+#include <climits>
 #include <unistd.h>
 #include <sstream>
 #include <list>

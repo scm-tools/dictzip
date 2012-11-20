@@ -4,30 +4,27 @@
 
 .TH COLORIT 1 "28 Oct 2003" "" ""
 .SH "NAME"
-colorit - a script for markuping the text input
+colorit \- a script for markuping the text input
 .SH "SYNOPSIS"
 .nf
 .BI colorit " [OPTIONS] [files...]"
 .fi
 .SH "DESCRIPTION"
 .B colorit
-is a script for markuping text input and sending a result to pager (
-.I less -r
-by default) or stdout.
+is a script for markuping text input and sending a result to
+stdout.
 Markuping rules are described in a configuration file
 which is filtered by preprocessor (the default is
 .I m4
 ).
 The define HOME equal to your home directory is set for the preprocessor
-using -D option supported by both
+using \-D option supported by both
 .I m4
 and
 .I cpp.
 This script can be used for colorizing the text by
 ANSI escape sequences, or making a simple text conversions
-and may be used as a pager instead of
-.I less
-by
+and may be used for colorizing output of 
 .I dict
 or other programs. In particular, log files,
 .I dict,
@@ -49,10 +46,6 @@ Specify configuration file.  The default is
 .I ~/.coloritrc
 or
 .I @SYSCONFDIR@/colorit.conf
-.TP
-.BI \-P " pager\fR or "  \-\-pager " pager"
-Specify a pager (- for none). The default is
-.I less -r
 .TP
 .BI \-\-pp " preprocessor"
 Specify a preprocessor (- for none).

@@ -67,7 +67,7 @@ YACC=		@YACC@
 
 LEXLIB= 	@LEXLIB@
 
-CFLAGS= @CPPFLAGS@ @DEFS@ @CFLAGS@ -DDICT_PLUGIN_PATH=\"$(PLUGIN_DIR)/\" -DDICT_DICTIONARY_PATH=\"$(DICT_DIR)/\" -DDICT_VERSION=\"$(DICT_VERSION)\" -DDICT_CONFIG_PATH=\"$(CONF_DIR)/\" -I. -I$(srcdir)
+CFLAGS= @CPPFLAGS@ @DEFS@ $(filter-out -O%, @CFLAGS@) -DDICT_PLUGIN_PATH=\"$(PLUGIN_DIR)/\" -DDICT_DICTIONARY_PATH=\"$(DICT_DIR)/\" -DDICT_VERSION=\"$(DICT_VERSION)\" -DDICT_CONFIG_PATH=\"$(CONF_DIR)/\" -I. -I$(srcdir)
 
 LIBMAA=		@LIBMAA@
 LIBS=		@LIBS@ ${LIBMAA}
@@ -374,7 +374,8 @@ clean:
 	-rm -f *.dict *.index
 	-rm -f *.exe *.dll
 	-rm -f test/_* test/testdb.t.txt test/log.txt
-	-rm -f ChangeLog*
+	-rm -f $(patsubst %.in,%,$(wildcard examples/*.in))
+	#-rm -f ChangeLog*
 
 recursive-clean: clean
 	@for subdir in `echo $(subdirs)`; do \
