@@ -1,0 +1,72 @@
+#!/bin/sh
+# vim: ts=4:et:sts=4
+# $Id: dictd.postinst 110 2009-03-08 22:43:11Z robert $
+
+set -e
+
+PACKAGE=dictd
+DEFAULTSFILE=/etc/default/$PACKAGE
+
+updateRunMode()
+{
+    RUN_MODE="$1"
+    TMPFILE="$DEFAULTSFILE.dpkg-tmp"
+    TEMPLATEFILE="/usr/share/$PACKAGE/ucf/default.template"
+    MD5SUMSFILE="/usr/share/$PACKAGE/ucf/default.md5sums"
+
+    sed -e "s/^[[:space:]]*RUN_MODE[[:space:]]*=.*/RUN_MODE=\"${RUN_MODE}\"/" \
+                < "$TEMPLATEFILE" > "$TMPFILE"
+    chmod 0644 "$TMPFILE"
+    ucf --debconf-ok --sum-file "$MD5SUMSFILE" --three-way "$TMPFILE" "$DEFAULTSFILE"
+    ucfr "$PACKAGE" "$DEFAULTSFILE"
+    rm -f "$TMPFILE"
+
+    DICTD_ARGS=""
+    . "$DEFAULTSFILE"
+
+    if [ "$RUN_MODE" = "inetd" ] ; then
+        # Add service to /etc/inetd.conf
+        update-inetd \
+            --group OTHER \
+            --add "dict\tstream\ttcp\tnowait\tdictd.dictd\t/usr/sbin/tcpd\t/usr/sbin/dictd $DICTD_ARGS --inetd"
+        update-inetd --enable dict
+    else
+        update-inetd --disable dict
+    fi
+}
+
+. /usr/share/debconf/confmodule
+
+case "$1" in
+     configure)
+        # Remove shutdown and reboot links; this init script doesn't need them.
+        if dpkg --compare-versions "$2" lt "1.11.0.dfsg-1~"; then
+            rm -f /etc/rc0.d/K20dictd /etc/rc6.d/K20dictd
+        fi
+
+        # Create dictd system user
+        getent passwd dictd > /dev/null || \
+            adduser --quiet --system --home /var/lib/dictd  --no-create-home \
+            --gecos 'Dictd Server' --group dictd
+
+        db_get dictd/run_mode || true
+        updateRunMode "$RET"
+
+        # Run our config script
+        [ ! -x /usr/sbin/dictdconfig ] || dictdconfig -w
+
+
+        ;;
+
+    failed-upgrade|abort-upgrade|abort-remove|abort-deconfigure|in-favour|removing)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2;
+        exit 1;
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

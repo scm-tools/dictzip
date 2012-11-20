@@ -1,0 +1,54 @@
+# Slovak debconf translation of dictd
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dictd package.
+# Ivan Masár <helix84@centrum.sk>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dictd\n"
+"Report-Msgid-Bugs-To: dictd@packages.debian.org\n"
+"POT-Creation-Date: 2009-04-06 07:52+0200\n"
+"PO-Revision-Date: 2009-06-24 13:39+0100\n"
+"Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "daemon"
+msgstr "démon"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "inetd"
+msgstr "inetd"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "disabled"
+msgstr "vypnutý"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "Method for running dictd:"
+msgstr "Spôsob spúšťania dictd:"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "The dictd server can be run either as a stand-alone daemon or from inetd. You can also disable it entirely."
+msgstr "Server dictd možno spúšťať ako samostatný démon alebo prostredníctvom inetd. Spúšťanie dictd môžete tiež celkom vypnúť."
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "It is recommended to run it as a daemon."
+msgstr "Odporúča sa spúšťať dictd ako démon."
+

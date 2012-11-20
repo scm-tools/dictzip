@@ -1,0 +1,200 @@
+dictd server for Debian
+=======================
+
+
+--- CHARACTER ENCODINGS ---------------------------------------------
+
+     RFC2229 specifies the Dict Protocol used by dictd.  To be
+compliant with the RFC, all dictionary databases must be encoded in
+utf-8.  Since 7-bit ASCII is a subset of utf-8, plain ASCII
+dictionaries are compliant.  However, when "utf-8" is used in the
+following discussion, it refers to character sets that include
+characters greater than 0x7F.
+
+     dictd and dict are utf-8 capable, but do not convert character
+encodings from utf-8 to the user's locale encoding.  If your system is
+not configured to display utf-8 characters by default, you may use the
+script /usr/bin/dictl (distributed with the dict package) to convert
+the input to and output from utf-8 dictionaries to your preferred
+character set.  See dictl(1) for information on using dictl.
+
+     Since the 7-bit ASCII encoding used in the English language
+dictionaries is a subset of utf-8, many users can use dictl routinely
+in place of dict.  Such users might consider aliasing dict to dictl.
+
+     As of version 1.10.1, dictd uses internal implementations of
+UCS-2/UTF-8 functions.  Thus, dictd no longer need to specify a utf-8
+locale with the --locale option in order to use dictionaries encoded
+in utf-8.
+
+
+
+--- DICTD DICTIONARIES ----------------------------------------------
+
+     This package does not include any of the dictionary databases
+needed to be useful.  The dictionary databases packaged for Debian
+include:
+
+     The `dict-gcide' package contains the GNU version of the
+Collaborative International Dictionary of English, which is based on
+the Webster's Revised Unabridged Dictionary (G & C. Merriam Co., 1913,
+edited by Noah Porter), supplemented by many definitions from WordNet,
+the Century Dictionary, 1906, and by numerous definitions contributed
+by volunteers.  dict-gcide replaces dict-web1913, which contains the
+1913 Webster, without any supplementation or enhancement.
+ 
+     The 1913 Webster is a very comprehensive dictionary, and includes
+many quotations from literature to illustrate the definitions.  Since
+it is over 85 years old it is lacking in modern words and modern
+definitions of old words, and many of its definitions will be
+considered "politically incorrect" in today's world.  Since this is an
+historical document, bug reports asking for changes to make it more
+"politically correct" will be summarily closed.
+
+     The `dict-wn' package contains WordNet, A Lexical Database for
+English developed by the Cognitive Science Laboratory at Princeton
+University.  WordNet defines only nouns, verbs, adjectives and
+adverbs.  Other parts of speech, such as pronouns and articles, are
+omitted.  Definitions in this dictionary are more concise that in the
+1913 Webster.  This is a modern work, so it fills in many of the gaps
+left by the latter.  The two complement each other nicely, although
+the definitions returned tend to be somewhat duplicative.
+
+     Although either the 1913 Webster or WordNet could be used as a
+stand alone dictionary, I consider the two together to be highly
+desirable for a satisfactory English language dictionary.
+
+     The `dict-foldoc' package is the The Free On-line Dictionary of
+Computing, and the `dict-jargon' package is the same as the Hacker's
+Jargon file available in tex-info format on most Debian systems.
+Using the dict client to access the Jargon file is much faster than
+using the info interface (but doesn't present the same browsing
+opportunities of the latter).  There is a great deal of overlap
+between the Jargon file and the FOLDOC.  Although the FOLDOC is much
+larger than the Jargon file, there are numerous entries in the
+Jargon file that are not found in FOLDOC, so it is desirable to
+install both.
+
+     The `dict-vera' package is a dictionary of acronyms used in the
+computer field.
+   
+     The dict-devil package contains "The Devil's Dictionary", by
+Ambrose Bierce, an amusing, cynical, and irreverent collection of
+alternate definitions of common words.  When a dict search returns a
+definition from dict-devil in addition to ones from the mainstream
+dictionaries it is like a pleasantly surprising  "Easter Egg".
+
+     The `dict-element' package is a concise listing of the physical and
+chemical properties of the elements.
+
+     The `dict-easton' package contains Easton's 1897 Bible Dictionary,
+and the `dict-hitchcock' package contains Hitchcock's Bible Names
+Dictionary.  While many people will not be interested in these two
+packages, religious students may find them helpful.  Apart from any
+religious interest, I find them useful as a literary reference.
+
+     The `dict-gazetteer' package presents a great deal of detailed
+geographic information from the 1990 U. S. Census.  It is partially
+obsoleted by dict-gazetteer2, but contains some material missing from
+the more recent version.  The 'dict-gazetteer2k' package provides
+similar information derived from the 2000 U.S. Census.
+
+     dict-bouvier - The 1856 Revised Sixth Edition of John Bouvier's
+law dictionary.
+
+     dict-moby-thesaurus - the largest and most comprehensive
+thesaurus data source in English available for commercial use.
+
+     The foregoing dictionaries are encoded in 7-bit ASCII, but some,
+particularly dict-foldoc and dict-jargon, may be encoded in utf-8 in
+the future. 
+
+     Other dictionary packages available for Debian include:
+
+     dict-de-en - A German-English translation dictionary.
+Previously, this dictionary was encoded in ISO-8859-1, but starting
+with version 1.2-6, it is encoded in utf-8.  
+
+     mueller7-dict and muller7accent-dict - English/Russian
+dictionaries.  Previously, this was encoded in KOI8-R, an 8-bit
+encoding, but starting with version 2002.02.27-3 it is encoded in
+utf-8.  
+
+     dict-freedict* - over 40 bilingual dictionaries, encoded in
+utf-8. At the present time (March 2004) these packages are broken.
+
+    By default, the `dict' client returns all definitions found in
+all databases available to the server, in the order that the
+dictionaries are listed in the server's configuration file.
+
+
+ --- CONFIGURATION SCRIPT -------------------------------------------
+
+     A configuration script, /usr/sbin/dictdconfig, is included in the
+dictd package.  This script is non-interactive, and is normally run
+automatically when dictd is installed, and when any of the dictionary
+packages are installed or removed.  This means that most users will
+never have to edit, or even look at, a configuration file for dictd.
+
+     If called with the -w option, dictdconfig will scan the
+/usr/share/dictd directory, and create a listing of the available
+databases in /var/lib/dictd/db.list.  This listing is ordered in the
+sequence displayed by `dictdconfig -o'.  This sequence is hard coded
+into dictdconfig, but can be easily changed by the user via the
+optional dictdconfig order override file /etc/dictd.order.  See
+dictdconfig(8) for details.  (This sequence controls the order in
+which definitions are displayed if more than one dictionary has an
+entry corresponding to the word requested.)
+
+     When dictd or any of the dictionary databases are installed,
+`dictdconfig -w' is run, followed by a command to restart the server
+daemon.  Thus all installed dictionaries are immediately available as
+soon as they are installed.
+
+--- CONFIGURATION FILE ----------------------------------------------
+
+     As explained in the manual page dictd(8), the configuration file,
+/etc/dictd/dictd.conf, has four sections that must appear in the
+specified order.  The default /etc/dictd/dictd.conf provided in the
+distribution is a skeleton of a complete configuration file, with each
+of the sections defined but empty, with two exceptions.  The access
+section allows access only from the local host, and the database
+section includes `include /var/lib/dictd/db.list' in the database
+section.  This `include' line enables automatic configuration without
+disturbing the user's entries by causing dictd to read
+/var/lib/dictd/db.list instead of the database section of dictd.conf.
+
+     The vast majority of users do not require any entries in
+dictd.conf other than the available database information.  Users who
+are already using a dictd.conf file with other entries may copy those
+entries to the appropriate section of the default dictd.conf, or may
+replace the database entries in their existing file with `include
+/var/lib/dictd/db.list'.  Users who would prefer a `hand made custom'
+database listing may comment out or remove the `include' line from the
+default dictd.conf, and put their database list in its place.  If
+changes are made to the configuration file, the daemon must be
+restarted for these changes to take effect.  (See BUGS below).
+
+     Information in /etc/dictd/dictd.conf will be protected across
+upgrades by dpkg's conffile mechanism.  It is recommended that users
+not make manual entries in /var/lib/dictd/db.list, since this is not a
+conffile, and is subject to change whenever dictdconfig is run.
+
+     Older dictionary .debs do not call dictdconfig on installation.
+If any old dictionary .debs are installed, or if user-provided
+dictionary databases are installed, it will be necessary to run (as
+root) `/usr/sbin/dictdconfig -w', followed by `invoke-rc.d dictd 
+restart' in order to have dictd recognise these dictionaries.
+
+     By default, dictd allows access from any Internet host without
+authentication. The default /etc/dictd/dictd.conf restricts access to
+the local host. If your machine is acting as a server for a network,
+you probably must add additional access specifications.  See the
+manual page, dictd(8), or the example configuration files in
+`/usr/share/doc/dictd/examples'.
+
+     If you experience difficulties with dict queries, check to see if
+dictd is running, using "ps ax|grep dictd".  If not, you need to
+restart the daemon. If you need to start, restart or stop the daemon
+manually, do, as root, `invoke-rc.d dictd start|stop|restart'.
+

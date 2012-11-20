@@ -1,0 +1,66 @@
+     RFC2229 specifies the Dict Protocol, which is used by dictd.  To
+be compliant with the RFC, all dictionary databases must be encoded in
+utf-8.  However, dictd supports non-compliant dictionaries encoded in
+an 8-bit character set, if the appropriate locale settings are made.
+Since 7-bit ASCII is a subset of utf-8, plain ASCII dictionaries are
+compliant.  However, when "utf-8" is used in the following discussion,
+it refers to character sets that include characters greater than 0x7F.
+
+     NOTE: dictd is documented to support dictionaries using 8-bit
+encodings, however, that support is broken at this time.  8-bit
+support is not expected to be working properly until sometime after
+the release of dictd 1.9.11.
+
+     dictd and dict are utf-8 capable, but do not convert character
+encodings from utf-8 to the user's locale encoding.  If your system is
+not configured to display utf-8 characters by default, you may use the
+script /usr/bin/dictl (distributed with the dict package) to convert
+the input to and output from utf-8 dictionaries to your preferred
+character set.  See dictl(1) for information on using dictl.
+
+     Since the 7-bit ASCII encoding used in the English language
+dictionaries is a subset of utf-8, many users can use dictl routinely
+in place of dict.  Such users might consider aliasing dict to dictl.
+
+     In order to deal with dictionary databases encoded in various
+encodings, dictd uses a number of library functions that are
+locale-dependent, including strcoll, is*, isw*, tolower and twlower.
+Searching the .index file is also locale-dependent.  ( The command
+line options given to dictfmt when databases are formatted control the
+sorting sequence and which characters are included in the index.)
+
+     The locale used by dictd is determined by the --locale command
+line option, and is independent of the system locale.  (However, the
+specified locale must exist on the system.)  On a Debian system, the
+command line options used when starting the dictd server with the
+/etc/init.d scripts are most conveniently specified in the conffile
+"/etc/default/dictd".  Note that if dictd is started manually,
+"/etc/default/dictd" is not used, and the desired options must be
+given manually.
+
+     dictd will fail on startup if any of databases listed in
+/etc/dictd/dictd.conf are incompatible with dictd's locale.  If no
+--locale is given in the command line, dictd defaults to the "C"
+locale, which is compatible only with 7-bit ASCII databases.  One
+unfortunate effect of this is that it is impossible to use utf-8 and
+8-bit encoded dictionaries in the same dictd server. 
+
+     dictd(8)says "The locale used for the server should be the same
+as that used for dictfmt when the database was built."  In practice,
+any utf-8 or 7-bit ASCII dictionary may be used with any locale that
+includes .utf-8.  In general, if the character set and collating order
+of a dictionary's locale is the same as that of dictd's locale, there
+should be no compatibility problem.  If a dictionary's locale uses the
+latin1 character set, any latin1 locale may be used for dictd.  Since
+7-bit ASCII is a subset of both ISO-8859-1 (latin1) and utf-8 , an
+ASCII dictionary may be used with any ISO-8859 or utf-8 locale.
+
+     When databases are formatted with modern versions of dictfmt, a
+header "00-database-utf8" or "00-database-8bit" is inserted at the top
+of the .dict file.  To provide the user with the information necessary
+to configure a dictd server installation, the description of Debian
+dictionary packages should list the locale used for formatting.  This
+is not current practice, however, and it will be some time before it
+is adopted by all dictionary packages.  Until this policy is generally
+adopted, /usr/share/doc/dictd/README.Debian.gz provides some
+information about the encodings used in Debian dictionary packages.

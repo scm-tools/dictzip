@@ -1,0 +1,79 @@
+Source: dictd
+Section: text
+Priority: optional
+Maintainer: Robert Luberda <robert@debian.org>
+Build-Depends: flex, bison, zlib1g-dev, libltdl-dev, autotools-dev, quilt (>= 0.45), debhelper (>= 7), libtool, libmaa-dev (>= 1.2.0)
+Standards-Version: 3.9.1
+Homepage: http://sourceforge.net/projects/dict/
+
+Package: dictd
+Architecture: any
+Description: dictionary server
+ This package provides a TCP-based server that allows a client to access
+ dictionary definitions from a set of natural language dictionary databases.
+ .
+ Many dictionary databases have been packaged for use with dictd. They are
+ described in the /usr/share/doc/dictd/README.Debian.gz file.
+ .
+ Either dict-gcide or dict-wn is essential for a useful English
+ language dictionary server.  It is strongly recommended that both be
+ installed.  If you are interested in computer terminology, it is
+ recommended to install at least dict-jargon, dict-foldoc, or
+ dict-vera.
+ .
+ The client program, dict, is packaged separately and is needed on all
+ machines that will use the server.
+Depends: ${shlibs:Depends}, ${misc:Depends}, netbase, adduser, dictzip (>= ${source:Upstream-Version}), lsb-base (>= 3.2-13), ucf (>= 3), update-inetd
+Recommends: dict | dict-client
+Suggests: dict-gcide | dictd-dictionary, dict-wn, dict-jargon, dict-foldoc
+Provides: dict-server
+Conflicts: dict-server
+
+Package: dict
+Architecture: any
+Description: dictionary client
+ This package provides a client application to query a dictd server.
+ The client-server protocol is TCP-based; the server may then be local or
+ accessed through the network.
+ .
+ The DICT Development Group maintains several public servers which can
+ be accessed from any machine connected to the Internet.  The default
+ configuration is to query one of these servers first. This may be
+ changed in the configuration file /etc/dictd/dict.conf.
+ .
+ Queries may be customized by numerous command line options, including
+ specifying the database(s) to be queried and the search strategy to
+ be used.
+ .
+ This package also provides dictl, which allows using UTF-8 encoded dictionaries
+ with terminals that do not support UTF-8.
+Depends: ${shlibs:Depends}, ${misc:Depends}, netbase, recode
+Recommends: m4, gawk
+Suggests: dictd | dict-server
+Provides: dict-client
+
+Package: dictzip
+Architecture: any
+Description: compression utility for dictionary databases
+ This package provides a utility to compress dictionary databases with the
+ LZ77 algorithm in a manner which is completely compatible with gzip(1),
+ but using an extension that allows for random access to chunks
+ of about 57kB without the overhead of decompressing the entire file.
+ .
+ This package also includes dictunzip, to decompress dictzipped files,
+ and dictzcat, for viewing dictzipped files.
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: dictd (<< 1.7.1-1)
+
+Package: dictfmt
+Section: utils
+Architecture: any
+Description: utility to format a file for use by a dictd server
+ This package provides dictfmt. This utility can convert an input file
+ to a dictionary database that conforms to the DICT protocol, and create
+ a corresponding index file.
+ .
+ The package also provides dictunformat, which creates a raw database
+ from a dictionary index and a dictionary database.
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: dictzip

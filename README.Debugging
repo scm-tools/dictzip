@@ -1,0 +1,15 @@
+     This version of dictd supports the environment variable
+`DEB_BUILD_OPTIONS', as recommended by Debian Policy version 3.5.7.0,
+section 11.1.  (This is a modification of the usage recommended by
+earlier versions of policy, and used in earlier versions of dictd.)
+
+     By default all binaries are compiled with debugging symbols
+included, and with -O2 optimisation, but the copies of them in the
+debian directory will have the debugging symbols stripped.
+
+     If this variable contains the string `noopt', the binaries will be
+compiled without optimisation.
+
+     If this variable contains the string `nostrip' the executables
+under the debian directory, and in the *.deb packages, will contain
+debugging symbols.

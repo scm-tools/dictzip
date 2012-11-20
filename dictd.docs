@@ -1,0 +1,8 @@
+debian/doc/README.Debugging
+debian/doc/README.inetd
+debian/doc/README.Plugins
+debian/doc/README.Index2suffix
+debian/doc/README.Index2word
+debian/doc/README.Virtual_dictionaries
+debian/doc/README.Unformat
+doc/security.doc

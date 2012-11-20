@@ -1,0 +1,23 @@
+     The "suffix" search strategy matches the last portion of the
+headword.  Since it must search the whole index file, it is not as
+fast as the default "exact" strategy.
+
+     If an optional index_suffix file is provided, a suffix search is
+much faster.  The dictfmt_index2suffix.1 script (provided in the
+dictfmt package) will produce this index_suffix file (see the manual
+page dictfmt_index2suffix(1)).
+
+     An index_suffix file is included in the dictd.conf file as
+follows:
+
+database gcide
+ {
+  data  /usr/share/dictd/gcide.dict.dz
+  index /usr/share/dictd/gcide.index
+  index_suffix /usr/share/dictd/gcide.suffix
+}
+
+    Versions 1.2 and higher of dictdconfig handle .suffix files
+automatically.
+
+Robert D. Hilliard <hilliard@debian.org> 20 April 2003

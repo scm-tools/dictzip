@@ -1,0 +1,23 @@
+     The "word" search strategy matches any single word, even if part
+of a longer headword or a multi-word entry.  Since it must search the
+whole index file, it is not as fast as the default "exact" strategy.
+
+     If an optional index_word file is provided, a word search is
+much faster.  The dictfmt_index2word.1 script (provided in the
+dictfmt package) will produce this index_word file (see the manual
+page dictfmt_index2word(1)).
+
+     An index_word file is included in the dictd.conf file as
+follows:
+
+database gcide
+ {
+  data  /usr/share/dictd/gcide.dict.dz
+  index /usr/share/dictd/gcide.index
+  index_word /usr/share/dictd/gcide.word
+}
+
+    Versions 1.2 and higher of dictdconfig handle .word files
+automatically.
+
+Robert D. Hilliard <hilliard@debian.org> 20 April 2003

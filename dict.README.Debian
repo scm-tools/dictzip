@@ -1,0 +1,43 @@
+dict client for Debian
+======================
+
+
+ --- CHARACTER ENCODINGS --------------------------------------------
+
+     dict do not convert character encodings from utf-8 to the user's 
+locale encoding.  If your system is not configured to display utf-8 
+characters by default, you may use the script /usr/bin/dictl to convert 
+the input to and output from utf-8 dictionaries to your preferred
+character set.  Refer to the dictl(1) manual page.
+
+
+ --- CONFIGURATION --------------------------------------------------
+
+     The default configuration file is set up to have dict try to
+access a dictd server on the local host, failing that, it will try a
+public server at dict.org, on the Internet.  (You must be online to
+access the public server; the dict client will not make a connection
+automatically.)  In many cases this will be slow, especially when it
+is trying to access a non-existent public server first, so you should
+comment out the line for the server that you don't want to use. To use
+any other server, enter its URL or IP address in place of "dict.org".
+
+     By default, the `dict' client returns all definitions found in
+all databases available to the server, in the order that the
+dictionaries are listed in the server's configuration file.  Command 
+line switches are available for the client to restrict the searches 
+to certain dictionaries, to select among the several available search
+strategies.  See the manual page, dict(1), for all command line options.
+
+
+
+ --- PUBLIC DICTD SERVERS -------------------------------------------
+
+     The DICT Group maintains a number of public servers, which are
+accessed in round-robin fashion by the address dict.org, so delays due
+to busy servers should be minimised.  
+
+     The public servers do not require any userid, password, or other
+authentication.  A private server, such as one on your own or a
+nearby network may require authentication.  See the man page, dict(1),
+or the sample configuration file, in /etc/usr/share/doc/dict/examples.

@@ -1,0 +1,37 @@
+     dictd plugin support is more extensive than in 1.9.10, including
+support for Judy-based implementations.  Since this increases the
+number of files required, and because plugin creation is not likely to
+interest many Debian users, the plug-in shared libraries and the
+man_popen files are no longer shipped with the dictd binary package.
+     
+     Debian users who wish to work with plugins should get the source
+package - "apt-get source dictd".  In addition to the files listed
+above, the dictfmt executable is required to build plugins.  dictfmt
+is made from the dictd sources, and is available in the Debian dictfmt
+package.
+
+     In this Debian package, dictd is compiled with --libexecdir=/usr
+/lib/dictd.  Plugins are expected in this directory.  (This is a
+compile time option.) 
+
+     A Plugin may be integrated into dictd by the use of
+dictfmt_plugin.  If the plugin .dict and .index files produced by
+dictfmt_plugin are installed in /usr/share/dictd, dictdconfig will
+include them in configuration file.  Alternatively, plugins may be
+defined in dictd.conf (see Plugin Specification in dictd(8)).  If
+dictdconfig is used, it will be necessary to manually insert the
+plugin definition in the database section of dictd.conf on a line
+following the "include /var/lib/dictd/db.list" line.  dictdconfig may
+still be used to incorporate all other dictionaries into the
+configuration file.
+
+     If anyone makes any generally useful plugins, I would like to
+hear about it.  If they seem to have enough utility for general users,
+I would consider adding them to the dictd package.  If enough people
+submit working plugins, dictd may be able to fulfil Zawinski's Law
+(see dict-jargon).
+
+
+Robert D. Hilliard <hilliard@debian.org>,  19 December 2003
+
+

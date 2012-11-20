@@ -1,0 +1,44 @@
+     By default, dictd searches all dictionaries listed in the
+configuration file, and returns all definitions found.  This is
+usually satisfactory, but sometimes a user may want to search over
+some but not all of the available databases.
+
+     One solution is for the server to provide "virtual" databases
+which merge several of the regular databases into one.  For example a
+virtual database may be provided which includes all of the translating
+dictionaries, or all of the computer-related dictionaries.
+
+
+     The dictdconfig script will insert virtual dictionaries and the
+"database_exit" directive in /var/lib/dictd/db.list as specified in
+/etc/dictd/dictd.order.
+
+     Alternatively, a virtual dictionary may defined in the
+configuration file ) see "Virtual Database Specification" in
+dictd(8).  In this case, the virtual definition must be manually
+inserted into the database section of dictd.conf on a line
+following the "include /var/lib/dictd/db.list" line.  dictdconfig may
+still be used to incorporate all other dictionaries into the
+configuration file.
+
+     There are two general ways to use virtual dictionaries.  In one
+approach, one or more virtual dictionaries are treated as the default.
+This is illustrated by /usr/share/doc/dictd/examples/example_virtual.conf.
+
+     Another approach is to leave all available dictionaries as the
+default set, and several virtual dictionaries, that are omitted from
+the default set may be used when restricted searches are desired.
+This is illustrated by
+/usr/share/doc/dictd/examples/example_virtual2.conf. 
+
+     Various combinations of the above approaches may be used.  The
+important thing to remember is that all dictionaries (real and
+virtual) before the database_exit directive are searched by default.  
+
+     The database_exit directive may also be used without virtual
+dictionaries.  For instance, all general dictionaries may be listed
+first, followed by database_exit, with the other dictionaries
+following.  These other dictionaries may be accessed with the -d
+option to dict.
+
+Robert D. Hilliard <hilliard@debian.org>, 15 March, 2003

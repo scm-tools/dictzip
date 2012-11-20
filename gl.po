@@ -1,0 +1,57 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# marce villarino <mvillarino@users.sourceforge.net>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: templates_[fx3423]\n"
+"Report-Msgid-Bugs-To: dictd@packages.debian.org\n"
+"POT-Creation-Date: 2009-04-06 07:52+0200\n"
+"PO-Revision-Date: 2009-04-15 21:16+0200\n"
+"Last-Translator: marce villarino <mvillarino@users.sourceforge.net>\n"
+"Language-Team: Galician <proxecto@trasno.ent>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "daemon"
+msgstr "daemon"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "inetd"
+msgstr "inetd"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "disabled"
+msgstr "desactivado"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "Method for running dictd:"
+msgstr " Método para executar dictd:"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid ""
+"The dictd server can be run either as a stand-alone daemon or from inetd. "
+"You can also disable it entirely."
+msgstr ""
+"O servidor dictd pode executarse ou como daemon independente ou desde inetd. "
+"Tamén pode desactivalo por completo."
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "It is recommended to run it as a daemon."
+msgstr "Recoméndase executalo como daemon."

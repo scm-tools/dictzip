@@ -1,0 +1,4 @@
+usr/sbin
+var/lib/dictd
+usr/lib/dictd
+etc/default

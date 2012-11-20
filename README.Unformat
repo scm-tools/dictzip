@@ -1,0 +1,17 @@
+     The script dictunformat (provided with in the dictfmt package)
+takes a dictionary index file as the parameter and a dictionary
+database file on stdin and outputs a raw dictionary database on
+stdout.  The raw database is formatted to use the -c5 option of
+dictfmt. 
+
+     This may be useful for making corrections or other changes to a
+dictionary, or to convert a dictionary from one character encoding to
+another. 
+
+     dictunformat requires an uncompressed file as input.  However,
+most dictionaries are distributed as compressed (.dict.dz) files. One
+convenient way to use dictunformat is:
+
+dictzcat dictname.dict.dz | dictunformat dictname.index > dictname
+
+Robert D. Hilliard <hilliard@debian.org>, 15 March, 2003

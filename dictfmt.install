@@ -1,0 +1,8 @@
+usr/bin/dictfmt_index2suffix
+usr/bin/dictfmt_index2word
+usr/bin/dictfmt
+usr/bin/dictunformat
+usr/share/man/man1/dictfmt_index2suffix.1
+usr/share/man/man1/dictfmt_index2word.1
+usr/share/man/man1/dictfmt.1
+usr/share/man/man1/dictunformat.1

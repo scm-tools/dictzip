@@ -1,0 +1,5 @@
+The package uses quilt(1) for managing patches. `debian/rules patch' will apply 
+all patches to the extracted source; the same can be achieved with `quilt push -a'.
+For unpatching use `debian/rules unpatch' or `quilt pop -a'.
+To add new patch use `quilt add patchname.diff', to edit files in patch use 
+`quilt edit filename.c' and then `quilt refresh'.

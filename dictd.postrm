@@ -1,0 +1,61 @@
+#!/bin/sh
+# vim: ts=4:et:sts=4
+# $Id: dictd.postrm 89 2009-01-03 16:34:01Z robert $
+
+set -e
+
+PACKAGE=dictd
+DEFAULTSFILE=/etc/default/$PACKAGE
+
+
+cleanupUcf() 
+{
+    which ucf >/dev/null && HAS_UCF=yes || HAS_UCF=no
+    which ucfr >/dev/null && HAS_UCFR=yes || HAS_UCFR=no
+    # we mimic dpkg as closely as possible, so we remove configuration
+    # files with dpkg backup extensions too:
+    for ext in '~' '%' .bak .ucf-new .ucf-old .ucf-dist .dpkg-tmp '';  do
+        rm -f "${DEFAULTSFILE}${ext}"
+    done
+    [ "$HAS_UCF"  != "yes"  ] || ucf  --purge "$DEFAULTSFILE"
+    [ "$HAS_UCFR" != "yes" ]  || ucfr --purge "$PACKAGE" "$DEFAULTSFILE"
+}
+
+#DEBHELPER# 
+
+case "$1" in
+   failed-install|abort-install|abort-upgrade|failed-upgrade)
+        exit 0
+    ;;
+
+    remove)
+        rm -fr /var/lib/dictd/
+        exit 0
+    ;;
+    purge)
+
+        rm -f /var/lib/dictd/db.list
+        rm -rf /var/lib/dictd/ 
+        [ ! -d /etc/dictd ] || rmdir  --ignore-fail-on-non-empty /etc/dictd || true
+        cleanupUcf
+
+
+        # remove inetd entry - due to bug#510406 enable it before removal
+        [ ! -x /usr/sbin/update-inetd ] \
+            || { update-inetd --enable "dict" || true; \
+                update-inetd --remove "dict"; }  \
+            || true
+
+        # remove user, group and home directory dictd
+        deluser --remove-home dictd >/dev/null 2>&1 || true
+
+        exit 0
+    ;;
+    upgrade|disappear)
+        exit 0
+    ;;
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac

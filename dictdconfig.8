@@ -1,0 +1,175 @@
+.\" This manpage is copyright (C) 1999-2000 Kirk Hilliard <kirk@debian.org>.
+.\" This is free software, published under version 2 or (at your option)
+.\" any later version of the GNU General Public License.  You should
+.\" have received a copy of the GNU General Public License with your
+.\" Debian GNU/Linux system as /usr/share/common-licenses/GPL.
+.\" $Id: dictdconfig.8 25 2008-01-20 10:57:18Z robert $
+.\"
+.TH DICTDCONFIG 8 "January 20, 2008" "DEBIAN" "Debian User's Manual"
+.SH NAME
+dictdconfig \- write dictd database configuration section
+.SH SYNOPSIS
+.B dictdconfig
+[\-hlovw]
+[\-\-help]
+[\-\-list]
+[\-\-order]
+[\-\-version]
+[\-\-write]
+.SH DESCRIPTION
+.B dictdconfig
+generates a complete
+.B dictd
+database configuration section for
+available dictionary databases found in
+.I /usr/share/dictd/
+(or possibly elsewhere if an optional order override file is present).
+If a dictionary database contains a <basename>.suffix and/or a
+<basename>.word file, appropriate index_suffix and index_word entries
+are created.
+.PP
+Its output file
+.I /var/lib/dictd/db.list
+may then be included from the
+.B dictd
+configuration file
+.I /etc/dictd/dictd.conf
+with an
+``include /var/lib/dictd/db.list''
+line.
+See
+.BR dictd (8)
+for an explanation of
+.B dictd
+configuration.
+.PP
+In Debian, 
+.B dictdconfig
+is automatically invoked upon installation or removal of
+dictionary database packages,
+so most users will never need to invoke it by hand.
+.SS DATABASE ORDER
+The default order in which database entries are written is hard coded
+into
+.BR dictdconfig ,
+but it may be overridden via the optional order override file
+.IR /etc/dictd/dictd.order .
+This may be desired because
+.B dictd
+returns definitions from dictionary databases in the order in which
+they are listed in its configuration file.
+The order override file may also be used to include local dictionary
+databases which may not necessarily reside in
+.IR /usr/share/dictd/ .
+.PP
+.IR /etc/dictd/dictd.order ,
+if present, should be a whitespace separated list of basenames and
+directories.  It may also include comments starting with # and
+extending to the end of the line.  Virtual dictionaries and the directive 
+.B database_exit 
+may be included in the order override file.  (If virtual dictionaries
+are used, it is necessary to use this directive after the default set
+of dictionaries to avoid returning duplicate entries.  See 
+.IR dictd(8) .)
+.PP
+Dictionary database entries will be generated only for those databases
+found via basename and directory entries in the default order (or the
+order override file, if present), and they will be generated in the
+order in which these entries appear.  No more than one dictionary
+database entry of any given name will be generated.
+.PP
+Entries without a leading / are relative to
+.IR /usr/share/dictd/ .
+.PP
+Entries without a trailing / are basenames.
+A dictionary database entry is generated if
+.I <basename>.index
+and
+.I <basename>.dict.dz
+or
+.I <basename>.dict
+are present.
+.PP
+Entries with a trailing / are directories.
+A dictionary database entry is generated for each <name> where
+.I <directory>/<name>.index
+and
+.I <directory>/<name>.dict.dz
+or
+.I <directory>/<name>.dict
+are present.
+.PP
+The default order includes the directory
+.I /usr/share/dictd/
+as its final entry so that if a previously unknown dictionary database
+(one not explicitly mentioned in the default order)
+is installed, its dictionary database entry will still be generated.
+An order override file should also use this technique, both for
+.I /usr/share/dictd/
+and for any other directory where local dictionary database might be
+installed.
+.PP
+The \-o option may be used to make
+.B dictdconfig
+display the default order information along with the order override
+information if
+.I /etc/dictd/dictd.order
+is present.
+.SS DUMMY ENTRY
+If no dictionary databases are found (via basename or directory
+entries in the default order or the order override file), a dummy
+dictionary database entry will be generated with
+.I /dev/null
+for both data and index.  This allows dictd to start without error.
+.SS DATABASE ALIASES
+If an executable script named 
+.I /etc/dictd/dictdconfig.alias 
+exists, dictdconfig will filter database names through it.  The script
+can be bash, sed, perl, or whatever.  Although 
+.I dict \-D 
+will display database names of any length, names longer than 16
+characters are displayed in a ragged format.  Appropriate entries in
+this alias file can be used to cause 
+.I dict \-D 
+to display the database names in a reasonable format.
+.SH OPTIONS
+.TP
+.I \-w, \-\-write
+Write database section to
+.IR /var/lib/dictd/db.list .
+.TP
+.I \-l, \-\-list
+List database section to standard out.
+.TP
+.I \-o, \-\-order
+Display database order information.
+.TP
+.I \-h, \-\-help
+Display a usage message and exit.
+.TP
+.I \-v, \-\-version
+Display version information and exit.
+.SH FILES
+.TP
+.I /var/lib/dictd/db.list
+Output of
+.BR dictdconfig .
+.TP
+.I /etc/dictd/dictd.config
+.B dictd
+configuration file which "includes"
+.IR /var/lib/dictd/db.list .
+.TP
+.I /etc/dictd/dictd.order
+Optional
+.B dictdconfig
+order override file.
+.SH SEE ALSO
+dictd(8)
+.SH BUGS
+Older dictionary database packages did not automatically invoke
+.B dictdconfig
+upon installation and removal, so you may need to do so
+manually (after which, you should restart dictd).
+.SH AUTHOR
+Kirk Hilliard <kirk@debian.org>.

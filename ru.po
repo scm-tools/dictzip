@@ -1,0 +1,59 @@
+# translation of ru.po to Russian
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Yuri Kozlov <yuray@komyakino.ru>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: dictd 1.11.1+dfsg-1\n"
+"Report-Msgid-Bugs-To: dictd@packages.debian.org\n"
+"POT-Creation-Date: 2009-04-06 07:52+0200\n"
+"PO-Revision-Date: 2009-04-21 20:48+0400\n"
+"Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
+"Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "daemon"
+msgstr "в виде отдельной службы"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "inetd"
+msgstr "через inetd"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "disabled"
+msgstr "вообще не запускать"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "Method for running dictd:"
+msgstr "Метод запуска dictd:"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid ""
+"The dictd server can be run either as a stand-alone daemon or from inetd. "
+"You can also disable it entirely."
+msgstr ""
+"Сервер dictd может запускаться как самостоятельная служба или посредством "
+"inetd. Также вы можете отключить запуск вообще."
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "It is recommended to run it as a daemon."
+msgstr "Рекомендуется запуск в виде службы."

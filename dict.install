@@ -1,0 +1,8 @@
+../../debian/sources/colorit.conf     etc/dictd/
+../../debian/sources/dict.conf        etc/dictd/
+usr/bin/colorit
+usr/bin/dict
+usr/bin/dictl
+usr/share/man/man1/colorit.1
+usr/share/man/man1/dict.1
+usr/share/man/man1/dictl.1

@@ -1,0 +1,58 @@
+# translation of cs.po to Czech
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Vítězslav Kotrla <vitezslav.kotrla@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: dictd@packages.debian.org\n"
+"POT-Creation-Date: 2009-04-06 07:52+0200\n"
+"PO-Revision-Date: 2009-06-14 06:51+0200\n"
+"Last-Translator: Vítězslav Kotrla <vitezslav.kotrla@gmail.com>\n"
+"Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "daemon"
+msgstr "démon"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "inetd"
+msgstr "inetd"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "disabled"
+msgstr "zakázán"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "Method for running dictd:"
+msgstr "Způsob spouštění dictd:"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid ""
+"The dictd server can be run either as a stand-alone daemon or from inetd. "
+"You can also disable it entirely."
+msgstr ""
+"Server dictd může být spouštěn jako samostatný démon, nebo prostřednictvím "
+"inetd. Spouštění dictd můžete také zcela zakázat."
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "It is recommended to run it as a daemon."
+msgstr "Je doporučeno spouštět dictd jako démon."
+

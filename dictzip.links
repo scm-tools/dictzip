@@ -1,0 +1,4 @@
+usr/bin/dictzip usr/bin/dictunzip
+usr/bin/dictzip usr/bin/dictzcat
+usr/share/man/man1/dictzip.1 usr/share/man/man1/dictunzip.1
+usr/share/man/man1/dictzip.1 usr/share/man/man1/dictzcat.1

@@ -1,0 +1,3 @@
+debian/sources/dictd_virtual2.conf
+examples/dictd*.conf
+examples/dictd*.txt

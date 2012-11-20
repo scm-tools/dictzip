@@ -1,0 +1,169 @@
+#!/bin/sh
+# vim:ts=4:et:sts=4
+### BEGIN INIT INFO
+# Provides:          dictd
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      1
+# Short-Description: Start and stop dictionary server daemon
+### END INIT INFO
+#
+# Script to start and stop dictionary server daemon (/usr/sbin/dictd)
+# written by Bob Hilliard <hilliard@debian.org> 15 April 1988, last
+# modified on 04 Decmeber 2005.
+# based on /etc/init.d/skeleton v1.7  05-May-1997  by miquels@cistron.nl
+
+# dictd now writes a pid file before it drops root permissions (in favor of
+# dictd.dictd), so we no longer start it with -c dictd.
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/dictd
+NAME=dictd
+DESC="dictionary server"
+PIDFILE=/var/run/dictd.pid
+DEFAULTSFILE="/etc/default/$NAME"
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+# Set defaults
+DICTD_ARG=""
+RUN_MODE="daemon"
+
+# Read configuration variable file if it is present
+[ -r "$DEFAULTSFILE" ] && . "$DEFAULTSFILE"
+
+# Define LSB log_* functions.
+. /lib/lsb/init-functions
+
+
+set -e
+#
+# Function that check if service is enabled - if not it exits the script
+#
+check_runmode()
+{
+    verbose="$1"
+    case "$RUN_MODE" in
+        daemon)
+            return
+            ;;
+        inetd)
+            exit 0
+            ;;
+        disabled)
+            [ "$verbose" -eq 0 ] ||  log_warning_msg "Not staring $NAME - disabled in $DEFAULTSFILE"
+            exit 0
+            ;;
+        *)
+           if [ "$verbose" -eq 1 ]; then 
+                log_failure_msg "Unknown RUN_MODE set in $DEFAULTSFILE: $RUN_MODE"
+                exit 1;
+            fi
+            exit 0
+            ;;
+    esac
+
+}
+
+#
+# Function that cheks if service is running
+#
+is_running()
+{
+    ! start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null
+}   
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --  ${DICTD_ARGS}
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+    if start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $NAME; then
+        # Wait for children to finish too if this is a daemon that forks
+        # and if the daemon is only ever run from this initscript.
+        # If the above conditions are not satisfied then add some other code
+        # that waits for the process to drop all resources that could be
+        # needed by services started subsequently.  A last resort is to
+        # sleep for some time.
+        start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec $DAEMON || return $?
+        rm -f $PIDFILE
+        return 0;
+    fi      
+    return 1
+}
+
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+    start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --exec $DAEMON
+}
+
+
+status=0
+
+case "$1" in
+     start)
+        check_runmode 1
+        log_daemon_msg "Starting $DESC" "$NAME"
+        if is_running ; then
+            echo -n  " (already running)"
+        else        
+            do_start || status=$?
+        fi      
+        log_end_msg $status
+        ;;
+
+    stop)
+        check_runmode 0
+        log_daemon_msg "Stopping $DESC" "$NAME"
+        if is_running ; then
+            do_stop || status=$?
+        else        
+            echo -n " (not running)"
+        fi      
+        log_end_msg $status
+        ;;
+
+    restart)
+        check_runmode 0
+        log_daemon_msg "Restarting $DESC" "$NAME"
+        is_running && do_stop || true
+        do_start || status=$?
+        log_end_msg $status
+        ;;
+
+    reload|force-reload)
+        check_runmode 0
+        log_daemon_msg "Reloading $DESC configuration" "$NAME"
+        if is_running ; then
+            do_reload || status=$?
+        else        
+            echo -n " (not running)"
+            status=1
+        fi      
+        log_end_msg $status
+        ;;
+
+    status)
+        check_runmode 0
+        status_of_proc "$DAEMON" "$NAME" || status=$?
+        ;;
+
+    *)
+        log_failure_msg "Usage: /etc/init.d/$NAME {start|stop|restart|reload|force-reload|status}" 2>&1
+        exit 1
+        ;;
+esac
+
+exit $status

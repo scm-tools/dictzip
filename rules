@@ -1,0 +1,175 @@
+#!/usr/bin/make -f
+#
+# $Id: rules 131 2011-01-04 22:27:29Z robert $
+#
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+#  Package specific stuff.  The idea is to try to make the rules
+#  generic (gradually).
+
+export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+  confflags = --build $(DEB_HOST_GNU_TYPE)
+else
+  confflags = --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
+endif
+
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+  CFLAGS = -g -Wall -O0
+else	
+  CFLAGS = -g -Wall -O2
+endif
+
+LDFLAGS   = -Wl,-z,defs -Wl,--as-needed
+MAKEARGS  = JUDYLIB= DBILIB= DEBCFLAGS="$(CFLAGS)"
+DESTDIR   = $(CURDIR)/debian/tmp
+
+build: autotools patch configure-stamp build-stamp
+
+configure: autotools patch configure-stamp
+
+
+include /usr/share/quilt/quilt.make
+
+
+autotools: autotools-clean
+	tar cvzf configs.tgz  config.sub config.guess
+	rm -f config.sub config.guess
+	ln -s /usr/share/misc/config.sub config.sub
+	ln -s /usr/share/misc/config.guess config.guess
+
+autotools-clean:
+	if [  -f configs.tgz ] ; then \
+		set -e ; \
+		rm -f config.sub config.guess  ; \
+		tar xvzf configs.tgz ; \
+		rm -f configs.tgz ; \
+	fi
+
+	
+
+configure-stamp:
+	dh_testdir
+	
+	LDFLAGS="$(LDFLAGS)" \
+	AWK=awk	\
+	./configure  	--verbose \
+			--prefix=/usr \
+			--libexecdir=/usr/lib/dictd \
+			--datadir=/usr/share/dictd \
+			--sysconfdir=/etc/dictd  \
+			$(confflags)
+	touch "$@"
+
+build-stamp:
+	dh_testdir
+
+	$(MAKE) $(MAKEARGS)
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	$(MAKE) $(MAKEARGS) test
+endif
+
+#	$(MAKE) CFLAGS+='-fPIC -D_REENTRANT' samples
+
+	touch "$@"
+
+clean-upstream:
+	dh_testdir
+	dh_testroot
+	rm -f configure-stamp build-stamp
+
+	test ! -f test/dictd_test || rm -f `find test -maxdepth 1 -type f -newer test/dictd_test` test/dictd_test
+
+	test ! -f Makefile || $(MAKE) $(MAKEARGS) distclean
+
+	rm -f core `find . \( -name '*.orig' -o -name '*.rej' -o -name '*~' \
+		-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' -o -name 'config.log' \
+		-o -name '.*.rej' -o -name '.SUMS' -o -size 0 \) -print` TAGS
+	rm -rf .libs dictunformat examples/dictd_popen.conf
+	dh_clean
+
+
+# make sure `$(MAKE) distclean' is run *before* unpatch 
+clean: clean-upstream unpatch autotools-clean
+
+
+install: DH_OPTIONS=
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs -A
+
+	# Add here commands to install the package into debian/tmp.
+	$(MAKE) $(MAKEARGS) DESTDIR=$(DESTDIR) install
+	rm  $(DESTDIR)/usr/include/dictdplugin.h
+	rm  $(DESTDIR)/usr/bin/dictdplugin-config
+
+	dh_install --list-missing --sourcedir=$(DESTDIR)
+
+# This single target is used to build all the packages, all at once, or
+# one at a time. So keep in mind: any options passed to commands here will
+# affect _all_ packages. Anything you want to only affect one package
+# should be put in another target, such as the install target.
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs -k NEWS
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installdebconf
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installcatalogs
+#	dh_installpam
+#	dh_installmime
+	dh_installinit -- start 20 2 3 4 5 . stop 20 1 .
+	dh_installman
+#	dh_installcron
+#	dh_installinfo
+#	dh_installwm
+#	dh_installudev
+	dh_lintian
+#	dh_bugfiles
+#	dh_undocumented
+	dh_strip
+	dh_link
+	dh_compress
+	dh_fixperms
+
+	find debian -mindepth 6 -maxdepth 7 -path "*/usr/share/doc/*" \
+		'!' -name "*.gz" -name "README.*" -exec gzip -9 {} \;
+	find debian -mindepth 4 -maxdepth 5 -path "*/dictd/etc/dictd/*" \
+		-name dictdconfig.alias -exec chmod 755 {} \;
+
+	dh_perl
+#	dh_python
+#	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture independant packages using the common target.
+binary-indep: build install
+# (Uncomment this next line if you have such packages.)
+#	 $(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+
+# Build architecture dependant packages using the common target.
+binary-arch: build install
+	$(MAKE) -f debian/rules DH_OPTIONS=-a binary-common
+
+# Any other binary targets build just one binary package at a time.
+binary-%: build install
+	make -f debian/rules binary-common DH_OPTIONS=-p$*
+
+binary: binary-indep binary-arch
+.PHONY: build clean clean-upstream binary-indep binary-arch binary-common binary install autotools autotools-clean

@@ -1,0 +1,18 @@
+# These templates have been reviewed by the debian-l10n-english
+# team
+#
+# If modifications/additions/rewording are needed, please ask
+# debian-l10n-english@lists.debian.org for advice.
+#
+# Even minor modifications require translation updates and such
+# changes should be coordinated with translators and reviewers.
+
+Template: dictd/run_mode
+Type: select
+__Choices: daemon, inetd, disabled
+Default: daemon
+_Description: Method for running dictd:
+ The dictd server can be run either as a stand-alone daemon or from inetd. You can also
+ disable it entirely.
+ .
+ It is recommended to run it as a daemon.

@@ -1,0 +1,77 @@
+# dictd po-debconf translation to Spanish
+# Copyright (C) 2009 Software in the Public Interest
+# This file is distributed under the same license as the dictd package.
+#
+# Changes:
+#   - Initial translation
+#       Francisco Javier Cuadrado <fcocuadrado@gmail.com>, 2009
+#
+# Traductores, si no conocen el formato PO, merece la pena leer la
+# documentación de gettext, especialmente las secciones dedicadas a este
+# formato, por ejemplo ejecutando:
+#       info -n '(gettext)PO Files'
+#       info -n '(gettext)Header Entry'
+#
+# Equipo de traducción al español, por favor lean antes de traducir
+# los siguientes documentos:
+#
+#   - El proyecto de traducción de Debian al español
+#     http://www.debian.org/intl/spanish/coordinacion
+#     especialmente las notas de traducción en
+#     http://www.debian.org/intl/spanish/notas
+#
+#   - La guía de traducción de po's de debconf:
+#     /usr/share/doc/po-debconf/README-trans
+#     o http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dictd 1.11.1+dfsg-2\n"
+"Report-Msgid-Bugs-To: dictd@packages.debian.org\n"
+"POT-Creation-Date: 2009-04-06 07:52+0200\n"
+"PO-Revision-Date: 2009-04-06 10:10+0100\n"
+"Last-Translator: Francisco Javier Cuadrado <fcocuadrado@gmail.com>\n"
+"Language-Team: Debian l10n Spanish <debian-l10n-spanish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "daemon"
+msgstr "demonio"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "inetd"
+msgstr "inetd"
+
+#. Type: select
+#. Choices
+#: ../dictd.templates:2001
+msgid "disabled"
+msgstr "desactivado"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "Method for running dictd:"
+msgstr "Método para ejecutar dictd:"
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid ""
+"The dictd server can be run either as a stand-alone daemon or from inetd. "
+"You can also disable it entirely."
+msgstr ""
+"El servidor de dictd se puede ejecutar como un demonio independiente o desde "
+"inted. También puede desactivarlo completamente."
+
+#. Type: select
+#. Description
+#: ../dictd.templates:2002
+msgid "It is recommended to run it as a daemon."
+msgstr "Se recomienda ejecutarlo como un demonio."
